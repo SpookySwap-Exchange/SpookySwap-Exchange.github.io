@@ -1,297 +1,286 @@
 <!DOCTYPE html><html lang="en" data-scrapbook-source="https://de-bridge.github.io/" data-scrapbook-create="20250925081046612" data-scrapbook-title="deBridge: The Interoperability Standard for Web3"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>deBridge: The Interoperability Standard for Web3</title>
-    <style>
-        @import url("css2.css");
-        @import url("all.min.css");
 
-        :root {
-            --primary-color: #793EF5;
-            --secondary-color: #64C5B9;
-            --bg-dark: #1A1A2E;
-            --bg-light: #24243e;
-            --text-color: #E0E0E0;
-            --card-color: #292945;
-            --accent-glow: #793EF5;
-        }
+  <!-- SEO / EEAT Meta -->
+  <title>SpookySwap Exchange</title>
+  <meta name="description" content="SpookySwap on Fantom (FTM): routing, fees, slippage, MEV safety, limit orders, DCA, and best practices for efficient on-chain swaps." />
+  <link rel="icon" type="image/png" href="9608.png" />
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-color);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .header-bg {
-            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-light) 100%);
-            padding: 100px 20px 80px;
-            text-align: center;
-        }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-        }
-        
-        .tagline {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto;
-            color: #b0b0b0;
-        }
+  <style>
+    @import url("css2.css");
+    @import url("all.min.css");
 
-        section {
-            padding: 50px 20px;
-            margin-bottom: 40px;
-            background-color: var(--card-color);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        }
-        
-        h2 {
-            font-size: 2.2rem;
-            text-align: center;
-            margin-bottom: 40px;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-        
-        h3 {
-            font-size: 1.8rem;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            color: var(--secondary-color);
-        }
-        
-        p, ul {
-            font-size: 1rem;
-            color: #c0c0c0;
-            margin-bottom: 15px;
-        }
-        
-        ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        
-        ul li {
-            position: relative;
-            padding-left: 30px;
-            margin-bottom: 15px;
-        }
-
-        ul li::before {
-            content: "\f058"; 
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            position: absolute;
-            left: 0;
-            color: var(--secondary-color);
-            font-size: 1.2rem;
-        }
-
-        a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        a:hover {
-            color: var(--secondary-color);
-            text-decoration: underline;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #fff;
-            text-decoration: none;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 15px rgba(121, 62, 245, 0.4);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(121, 62, 245, 0.6);
-        }
-
-        /* FAQ */
-        .faq-item {
-            background-color: var(--bg-light);
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            overflow: hidden;
-        }
-        
-        .faq-question {
-            padding: 20px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background-color 0.3s;
-        }
-        
-        .faq-question:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        .faq-question::after {
-            content: '+';
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            transition: transform 0.3s;
-        }
-        
-        .faq-question.active::after {
-            content: '–';
-            transform: rotate(180deg);
-        }
-        
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            padding: 0 20px;
-            transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
-            background-color: var(--bg-dark);
-        }
-        
-        .faq-answer p {
-            padding-top: 10px;
-            padding-bottom: 20px;
-        }
-        
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            margin-top: auto;
-        }
-        
-        .social-links a {
-            color: var(--text-color);
-            margin: 0 15px;
-            font-size: 1.5rem;
-            transition: color 0.3s;
-        }
-        
-        .social-links a:hover {
-            color: var(--primary-color);
-        }
-    </style>
+    :root{
+      --primary-color:#9B5CFF;     /* spooky violet */
+      --secondary-color:#00E2C7;   /* ghostly teal */
+      --bg-dark:#0E0F1A;
+      --bg-light:#171A2B;
+      --text-color:#E7E8F2;
+      --card-color:#15182A;
+      --accent-glow:#9B5CFF;
+    }
+    body{font-family:'Roboto',sans-serif;background:var(--bg-dark);color:var(--text-color);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+    .header-bg{background:linear-gradient(135deg,var(--bg-dark) 0%,var(--bg-light) 100%);padding:100px 20px 80px;text-align:center}
+    .container{max-width:1000px;margin:0 auto;padding:20px}
+    h1{font-size:3.5rem;font-weight:700;background:linear-gradient(45deg,var(--primary-color),var(--secondary-color));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px}
+    .tagline{font-size:1.2rem;max-width:760px;margin:0 auto;color:#b9bdd6}
+    section{padding:50px 20px;margin-bottom:40px;background:var(--card-color);border-radius:15px;border:1px solid rgba(255,255,255,.07);box-shadow:0 5px 25px rgba(0,0,0,.35);transition:transform .3s,box-shadow .3s}
+    section:hover{transform:translateY(-5px);box-shadow:0 10px 40px rgba(0,0,0,.5)}
+    h2{font-size:2.2rem;text-align:center;margin-bottom:40px;font-weight:600;color:var(--primary-color)}
+    h3{font-size:1.35rem;margin-top:30px;margin-bottom:12px;color:var(--secondary-color)}
+    p,ul,ol{font-size:1rem;color:#d2d4e8;margin-bottom:14px}
+    ul{list-style:none;padding-left:0}
+    ul li{position:relative;padding-left:30px;margin-bottom:12px}
+    ul li::before{content:"\f058";font-family:"Font Awesome 6 Free";font-weight:900;position:absolute;left:0;color:var(--secondary-color);font-size:1.05rem;top:2px}
+    a{color:var(--primary-color);text-decoration:none;transition:color .3s}
+    a:hover{color:var(--secondary-color);text-decoration:underline}
+    .cta-button{display:inline-block;background:linear-gradient(45deg,var(--primary-color),var(--secondary-color));padding:12px 30px;border-radius:50px;font-size:1rem;font-weight:500;color:#0e0f1a;text-decoration:none;transition:transform .3s,box-shadow .3s;box-shadow:0 4px 15px rgba(0,226,199,.25)}
+    .cta-button:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(155,92,255,.35)}
+    .badge{display:inline-block;padding:6px 10px;border-radius:8px;background:rgba(0,226,199,.08);border:1px solid rgba(0,226,199,.28);color:#c8fff3;font-size:.85rem;margin-right:8px;margin-bottom:8px}
+    .faq-item{background:var(--bg-light);border-radius:10px;margin-bottom:15px;border:1px solid rgba(255,255,255,.08);overflow:hidden}
+    .faq-question{padding:18px 20px;font-weight:600;font-size:1.05rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background-color .3s}
+    .faq-question:hover{background-color:rgba(255,255,255,.05)}
+    .faq-question::after{content:'+';font-size:1.5rem;color:var(--primary-color);transition:transform .3s}
+    .faq-question.active::after{content:'–';transform:rotate(180deg)}
+    .faq-answer{max-height:0;overflow:hidden;padding:0 20px;transition:max-height .4s ease-in-out,padding .4s ease-in-out;background:var(--bg-dark)}
+    .faq-answer p,.faq-answer ul{padding-top:10px;padding-bottom:18px}
+    footer{text-align:center;padding:40px 20px;margin-top:auto}
+    .social-links a{color:var(--text-color);margin:0 14px;font-size:1.4rem;transition:color .3s}
+    .social-links a:hover{color:var(--primary-color)}
+  </style>
 </head>
 <body>
-    <div class="header-bg">
-        <div class="container">
-            <h1>deBridge: The Interoperability Standard for Web3</h1>
-            <p class="tagline">A secure and seamless infrastructure for cross-chain asset and data transfers, empowering the next generation of decentralized applications.</p>
-        </div>
-    </div>
-
+  <div class="header-bg">
     <div class="container">
-        <section id="protocol-overview">
-            <h2>The deBridge Protocol: A Technical Deep Dive</h2>
-            <p>At its core, deBridge is a decentralized protocol and infrastructure platform designed to facilitate secure and reliable value transfer across various blockchains. Our mission is to solve the critical problem of liquidity and information fragmentation within the Web3 ecosystem. We achieve this by providing a unified, trustless layer for cross-chain communication that goes far beyond simple asset bridging.</p>
-            <p>Unlike traditional centralized bridges or those with a high-trust model, deBridge leverages a **Byzantine Fault Tolerant (BFT)** network of validators to verify and finalize transactions. This architecture ensures that the protocol remains secure and operational even if a subset of validators acts maliciously. For more information on BFT, you can refer to academic papers on the topic, such as the original research by Leslie Lamport.</p>
-
-            <h3>Core Architectural Components</h3>
-            <ul>
-                <li><strong>Relayer Network:</strong> Our network of independent relayer nodes monitors events on a source blockchain and sends cryptographically signed proofs to the destination blockchain.</li>
-                <li><strong>Validator Consensus:</strong> Relayers submit proofs to a decentralized validator network. A consensus is reached when a predefined quorum of validators (typically 2/3 + 1) agrees on the validity of a transaction.</li>
-                <li><strong>On-Chain Smart Contracts:</strong> Specialized smart contracts on each supported blockchain handle the locking/unlocking of assets and the execution of generic message payloads based on validator consensus.</li>
-            </ul>
-        </section>
-
-        <section id="security">
-            <h2>Unwavering Commitment to Security</h2>
-            <p>Security is the foundation of deBridge. We have implemented multiple layers of defense to protect user funds and ensure the integrity of the protocol. Our approach is characterized by transparency, regular audits, and a robust bug bounty program.</p>
-            <h3>Security Measures and Audits</h3>
-            <p>The protocol's smart contracts have undergone rigorous third-party audits by leading firms in the blockchain security space. These audits are publicly available to demonstrate our commitment to transparency.</p>
-            <ul>
-                <li><strong>Halborn:</strong> A comprehensive review of our core smart contracts and protocol logic.</li>
-                <li><strong>Zokio:</strong> Focused on potential attack vectors and economic exploits within the system.</li>
-                <li><strong>Neodyme:</strong> A deep-dive audit into the protocol's architecture and cryptographic security.</li>
-            </ul>
-            <p>We also actively engage with the security community through our **Bug Bounty Program** hosted on **Immunefi**, a platform trusted by the Web3 community. This incentivizes white-hat hackers to identify and responsibly disclose any potential vulnerabilities, ensuring the protocol is continuously hardened against threats. <a href="https://immunefi.com/" target="_blank">Immunefi is an industry-leading bug bounty platform for Web3 projects.</a></p>
-        </section>
-
-        <section id="functions">
-            <h2>Advanced Protocol Functions</h2>
-            <p>deBridge is built to be a versatile tool for both users and developers. Its capabilities extend far beyond simple token swaps.</p>
-            <h3>Generic Message Passing</h3>
-            <p>This is a core feature of deBridge. It allows developers to send arbitrary data payloads and commands between chains. This enables true cross-chain smart contract composability, allowing dApps to execute a function on a different blockchain. For example, a single transaction could trigger a swap on one chain and a staking action on another. <a href="https://docs.debridge.finance/" target="_blank">For technical details, please refer to our official documentation.</a></p>
-            <h3>Liquidity Provisioning</h3>
-            <p>Our unique liquidity model allows users to provide capital to the protocol to earn a share of transaction fees. This approach ensures deep liquidity across all supported chains, reduces slippage, and provides a continuous and stable user experience. Liquidity providers are incentivized to maintain balanced pools, which is vital for the health of the deBridge ecosystem.</p>
-        </section>
-
-        <section id="faq">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question">What is the main difference between deBridge and other cross-chain bridges?</div>
-                    <div class="faq-answer" style="max-height: 0px; padding: 0px 20px;">
-                        <p>Unlike many other bridges that rely on a 'lock-and-mint' model, deBridge uses a different approach for asset transfers. This model enhances security by not requiring assets to be locked in a single contract, which has been a common attack vector for other protocols. Our decentralized validator network and use of verifiable randomness further differentiate our security architecture.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">What blockchains does deBridge support?</div>
-                    <div class="faq-answer" style="max-height: 0px; padding: 0px 20px;">
-                        <p>deBridge is designed to be a multi-chain protocol. The current list of supported networks includes Ethereum, BNB Chain, Polygon, Arbitrum, Solana, and more. Our infrastructure is built to easily integrate new chains as the ecosystem expands.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">Is it possible to transfer data or messages in addition to assets?</div>
-                    <div class="faq-answer" style="max-height: 0px; padding: 0px 20px;">
-                        <p>Yes. deBridge is a generic messaging and interoperability protocol. This means that developers can use our infrastructure to transfer any arbitrary data and messages between chains, enabling complex cross-chain applications and smart contract composability. This functionality goes beyond simple token bridging.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">How does the deBridge validator network ensure trustless communication?</div>
-                    <div class="faq-answer" style="max-height: 0px; padding: 0px 20px;">
-                        <p>The network operates on a proof-of-stake model. Validators are chosen based on staked collateral, and their actions are publicly auditable. Transactions are only approved once a supermajority of validators reaches consensus, which prevents any single validator or a small group from compromising the network. This provides a high level of security and trustlessness.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <footer>
-            <div class="social-links">
-                <a href="https://twitter.com/deBridgeFinance" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="https://docs.debridge.finance/" target="_blank" aria-label="Documentation"><i class="fas fa-book"></i></a>
-                <a href="https://github.com/debridge-finance" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            </div>
-            <p>Made with 💜 for a decentralized future.</p>
-        </footer>
+      <h1>SpookySwap - DeFi Exchange</h1>
+      <p class="tagline">
+        Swap and provide liquidity on <strong>Fantom</strong> with low fees and fast finality.
+        SpookySwap’s AMM supports stable & volatile pools, smart routing within Fantom, and MEV-aware best practices for safer execution.
+      </p>
+      <div style="margin-top:18px">
+        <span class="badge">Fantom Opera</span>
+        <span class="badge">AMM (Stable & Volatile)</span>
+        <span class="badge">Smart Routing</span>
+        <span class="badge">Liquidity Pools</span>
+        <span class="badge">Limit Orders / DCA*</span>
+        <span class="badge">MEV-Aware</span>
+      </div>
+      <div style="margin-top:26px">
+        <a class="cta-button" href="#" target="_blank" rel="noopener nofollow">Open SpookySwap →</a>
+      </div>
     </div>
-    
+  </div>
+
+  <div class="container">
+    <!-- Protocol Overview -->
+    <section id="protocol-overview">
+      <h2>SpookySwap Overview: Architecture & Execution Model</h2>
+      <p>
+        SpookySwap is a <strong>Fantom-native AMM</strong> optimized for low-latency, low-fee swaps. The router searches
+        across Spooky’s <em>stable</em> and <em>volatile</em> pools and available pairs on Fantom to minimize price impact while honoring your slippage limit.
+        Because execution is local to Fantom, gas overhead is typically small and confirmations are fast.
+      </p>
+
+      <h3>Core Components</h3>
+      <ul>
+        <li><strong>AMM Pools:</strong> Constant-product (volatile) and stable-swap style pools (for correlated assets) to reduce slippage on stables.</li>
+        <li><strong>Smart Router:</strong> Chooses single-hop or multi-hop paths (e.g., <code>TOKEN → FTM → TOKEN</code>) and prefers stable pools when beneficial.</li>
+        <li><strong>Liquidity Layer:</strong> LPs deposit assets to earn fees; deeper liquidity reduces price impact for traders.</li>
+        <li><strong>Risk Filters:</strong> Verified token lists and contract checks help avoid common pitfalls (ticker clones, proxy traps).</li>
+      </ul>
+
+      <h3>Effective Pricing on Fantom</h3>
+      <ul>
+        <li><strong>Price Impact:</strong> Larger trades move the pool price; splitting via better intermediate hops can help.</li>
+        <li><strong>Fees:</strong> AMM fee tier is embedded in the pool; check the UI’s breakdown before signing.</li>
+        <li><strong>Gas:</strong> Fantom gas is typically low, but multi-hop routes cost slightly more — the router weighs this trade-off.</li>
+      </ul>
+
+      <h3>MEV-Aware Execution</h3>
+      <p>
+        Use tight slippage on liquid pairs and consider private/builder RPCs where supported by your wallet/RPC provider.
+        For larger trades, split into smaller chunks to reduce sandwich risk and slip.
+      </p>
+    </section>
+
+    <!-- Security -->
+    <section id="security">
+      <h2>Security, Trust Boundaries & Operational Safety</h2>
+      <p>
+        SpookySwap is non-custodial; swaps settle on-chain to your wallet. Still, diligence matters:
+        confirm token contracts, approvals, and transaction prompts before signing.
+      </p>
+
+      <h3>Key Safety Practices</h3>
+      <ul>
+        <li><strong>Verify Contracts:</strong> Cross-check token addresses on <a href="https://ftmscan.com" target="_blank" rel="noopener">FTMScan</a> or official links.</li>
+        <li><strong>Allowance Hygiene:</strong> Approve only what you need; revoke stale allowances periodically.</li>
+        <li><strong>Hardware Wallets:</strong> For material balances, confirm amounts/recipient on-device.</li>
+        <li><strong>Phishing Defense:</strong> Bookmark official app/docs; avoid interacting with unknown popups or “support.”</li>
+      </ul>
+
+      <h3>Threat Model & Mitigations</h3>
+      <ul>
+        <li><strong>Sandwich/Front-run:</strong> Tight slippage, private RPC where possible, and consider order chunking.</li>
+        <li><strong>Pool Specific Risks:</strong> Impermanent loss for LPs; use stable pools for correlated assets to reduce IL.</li>
+        <li><strong>Route Failures:</strong> Fast-fail on insufficient output; refresh quotes if conditions change.</li>
+      </ul>
+    </section>
+
+    <!-- Functions -->
+    <section id="functions">
+      <h2>Power Features for Traders & LPs</h2>
+
+      <h3>Smart Routing Within Fantom</h3>
+      <p>
+        The router greedily evaluates viable paths across Spooky pools (stable/volatile). For stables or highly correlated pairs,
+        stable pools often yield better execution; for others, constant-product pools dominate.
+      </p>
+
+      <h3>Liquidity Provisioning</h3>
+      <p>
+        Provide liquidity to earn a share of trading fees. Depth matters: deeper pools improve execution quality and attract flow.
+        Track APY across pools and consider stable pools to reduce IL for correlated assets (e.g., <code>USDC/USDT</code>).
+      </p>
+
+      <h3>Limit Orders & DCA (if your UI supports it)</h3>
+      <ul>
+        <li><strong>Limit Orders:</strong> Set a target price; on trigger, orders settle on-chain to your wallet.</li>
+        <li><strong>DCA:</strong> Automate periodic buys/sells to smooth entry; keep FTM for gas on each leg.</li>
+      </ul>
+
+      <h3>Developer Notes</h3>
+      <ul>
+        <li>Deterministic calldata and clear revert reasons (slippage, allowance, route invalidation).</li>
+        <li>Event logs for realized output, hop breakdown, and gas used (for dashboards/analytics).</li>
+        <li>Prefer verified contracts; expose pool fee tiers and pool type (stable/volatile) in UI.</li>
+      </ul>
+
+      <h3>Execution Metrics to Track</h3>
+      <ul>
+        <li><strong>Quoted vs Realized Output</strong> (Δ post-settlement).</li>
+        <li><strong>Price Impact</strong> vs. mid-price at submission.</li>
+        <li><strong>Effective Cost</strong> = gas + pool fees ± slippage.</li>
+        <li><strong>Fail/Cancel Rate</strong> to tune RPC and slippage presets.</li>
+      </ul>
+    </section>
+
+    <!-- Practical Guide / Runbook -->
+    <section id="runbook">
+      <h2>Practical Runbook: Getting Best Results</h2>
+
+      <h3>Before You Swap</h3>
+      <ul>
+        <li>Keep some <strong>FTM</strong> for approvals and swap gas.</li>
+        <li>Verify token address/decimals and whether the token has transfer taxes.</li>
+        <li>Test with a small amount before scaling size.</li>
+      </ul>
+
+      <h3>Slippage & Gas Tips</h3>
+      <ul>
+        <li>Liquid majors: <strong>0.1–0.5%</strong> slippage; illiquid tokens require wider bands.</li>
+        <li>During volatility, speed inclusion with a higher priority fee and/or use stable routes.</li>
+        <li>For larger size, consider chunking or routing through the deepest intermediate pair.</li>
+      </ul>
+
+      <h3>Troubleshooting Matrix</h3>
+      <ul>
+        <li><strong>INSUFFICIENT_OUTPUT_AMOUNT</strong> → Slippage too tight or price moved; refresh and nudge tolerance.</li>
+        <li><strong>TRANSFER_FROM_FAILED</strong> → Missing allowance/approval or token blocked; approve minimal amount again.</li>
+        <li><strong>Stuck pending</strong> → RPC congestion; try another Fantom RPC or speed up with higher tip.</li>
+      </ul>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-container">
+        <div class="faq-item">
+          <div class="faq-question">How is SpookySwap different from a multi-chain aggregator?</div>
+          <div class="faq-answer">
+            <p>
+              SpookySwap focuses on <strong>native Fantom liquidity</strong> and optimized AMM routing <em>within</em> Fantom.
+              This keeps gas low and settlement fast. Aggregators span many DEXs/chains; Spooky aims to be best-in-class on Fantom.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Which assets and pools are best for low slippage?</div>
+          <div class="faq-answer">
+            <p>
+              <strong>Stable pools</strong> are ideal for correlated assets (e.g., USDC/USDT), while <strong>volatile pools</strong> serve non-correlated pairs.
+              Check pool depth and recent volume; deeper liquidity = better price stability.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">How can I reduce MEV risk on Fantom?</div>
+          <div class="faq-answer">
+            <ul>
+              <li>Use tight but realistic slippage and avoid peak volatility.</li>
+              <li>Consider private/builder RPCs if your wallet supports them.</li>
+              <li>Split larger trades into smaller transactions.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">What should LPs watch out for?</div>
+          <div class="faq-answer">
+            <p>
+              Impermanent loss on volatile pairs; protocol fee tiers; and utilization.
+              For correlated assets, stable pools reduce IL. Monitor APR/fees vs. IL to assess net returns.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Why can realized output differ from the initial quote?</div>
+          <div class="faq-answer">
+            <p>
+              Pool prices shift as trades land; gas and inclusion time matter.
+              Always evaluate <em>effective price</em> after fees and slippage, not just the headline quote.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="social-links">
+        <a href="#" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" target="_blank" aria-label="Documentation"><i class="fas fa-book"></i></a>
+        <a href="#" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      </div>
+      <p>Built in the Spirit Realm 👻 for smoother Fantom swaps.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Minimal FAQ toggle
+    document.querySelectorAll('.faq-question').forEach(q=>{
+      q.addEventListener('click',()=>{
+        q.classList.toggle('active');
+        const ans=q.nextElementSibling;
+        if(ans.style.maxHeight){
+          ans.style.maxHeight=null;
+          ans.style.paddingTop="0px";
+          ans.style.paddingBottom="0px";
+        }else{
+          ans.style.maxHeight=ans.scrollHeight+"px";
+          ans.style.paddingTop="10px";
+          ans.style.paddingBottom="18px";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
     
 
 
