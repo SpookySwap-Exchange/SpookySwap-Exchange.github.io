@@ -3,8 +3,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- SEO / EEAT Meta -->
-  <title>SpookySwap Exchange</title>
-  <meta name="description" content="SpookySwap on Fantom (FTM): routing, fees, slippage, MEV safety, limit orders, DCA, and best practices for efficient on-chain swaps." />
+  <title>SpookySwap Exchange — Fantom AMM</title>
+  <meta name="description" content="SpookySwap Exchange on Fantom (FTM): SpookySwap v2 vs v3, SpookySwap Bridge tips, routing, fees, slippage, MEV safety, LP strategies, limit orders, DCA, and best practices for efficient on-chain swaps." />
   <link rel="icon" type="image/png" href="9608.png" />
 
   <style>
@@ -12,62 +12,108 @@
     @import url("all.min.css");
 
     :root{
-      --primary-color:#9B5CFF;     /* spooky violet */
-      --secondary-color:#00E2C7;   /* ghostly teal */
-      --bg-dark:#0E0F1A;
-      --bg-light:#171A2B;
-      --text-color:#E7E8F2;
-      --card-color:#15182A;
-      --accent-glow:#9B5CFF;
+      /* violet-pink theme */
+      --primary-color:#A855F7;     /* violet */
+      --secondary-color:#EC4899;   /* pink */
+      --bg-dark:#0F0A1A;           /* deep violet-black */
+      --bg-light:#1B1030;          /* card bg */
+      --text-color:#F2E9FE;        /* soft lilac text */
+      --card-color:#1A0F2B;
+      --accent-glow:#C084FC;       /* lighter violet glow */
     }
-    body{font-family:'Roboto',sans-serif;background:var(--bg-dark);color:var(--text-color);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
-    .header-bg{background:linear-gradient(135deg,var(--bg-dark) 0%,var(--bg-light) 100%);padding:100px 20px 80px;text-align:center}
+
+    body{
+      font-family:'Roboto',sans-serif;
+      background:radial-gradient(1200px 600px at 50% -200px, rgba(168,85,247,.15), transparent 50%), var(--bg-dark);
+      color:var(--text-color);
+      line-height:1.6;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column
+    }
+    .header-bg{
+      background:linear-gradient(135deg, rgba(236,72,153,.10), rgba(168,85,247,.10)), linear-gradient(135deg,var(--bg-dark) 0%,var(--bg-light) 100%);
+      padding:100px 20px 80px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06)
+    }
     .container{max-width:1000px;margin:0 auto;padding:20px}
-    h1{font-size:3.5rem;font-weight:700;background:linear-gradient(45deg,var(--primary-color),var(--secondary-color));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px}
-    .tagline{font-size:1.2rem;max-width:760px;margin:0 auto;color:#b9bdd6}
-    section{padding:50px 20px;margin-bottom:40px;background:var(--card-color);border-radius:15px;border:1px solid rgba(255,255,255,.07);box-shadow:0 5px 25px rgba(0,0,0,.35);transition:transform .3s,box-shadow .3s}
-    section:hover{transform:translateY(-5px);box-shadow:0 10px 40px rgba(0,0,0,.5)}
-    h2{font-size:2.2rem;text-align:center;margin-bottom:40px;font-weight:600;color:var(--primary-color)}
-    h3{font-size:1.35rem;margin-top:30px;margin-bottom:12px;color:var(--secondary-color)}
-    p,ul,ol{font-size:1rem;color:#d2d4e8;margin-bottom:14px}
+    h1{
+      font-size:3.5rem;font-weight:800;margin-bottom:18px;letter-spacing:.2px;
+      background:linear-gradient(45deg,var(--primary-color),var(--secondary-color));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent
+    }
+    .tagline{font-size:1.2rem;max-width:760px;margin:0 auto;color:#DCCEF7}
+    section{
+      padding:50px 20px;margin-bottom:40px;background:var(--card-color);
+      border-radius:16px;border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 8px 28px rgba(0,0,0,.45);
+      transition:transform .25s ease, box-shadow .25s ease
+    }
+    section:hover{transform:translateY(-4px);box-shadow:0 16px 60px rgba(0,0,0,.55)}
+    h2{
+      font-size:2.2rem;text-align:center;margin-bottom:36px;font-weight:800;
+      color:#F5D0FE; /* very light violet */
+      text-shadow:0 0 18px rgba(192,132,252,.25)
+    }
+    h3{font-size:1.28rem;margin-top:28px;margin-bottom:10px;color:#F0ABFC}
+    p,ul,ol{font-size:1rem;color:#EADCFB;margin-bottom:14px}
     ul{list-style:none;padding-left:0}
     ul li{position:relative;padding-left:30px;margin-bottom:12px}
-    ul li::before{content:"\f058";font-family:"Font Awesome 6 Free";font-weight:900;position:absolute;left:0;color:var(--secondary-color);font-size:1.05rem;top:2px}
-    a{color:var(--primary-color);text-decoration:none;transition:color .3s}
-    a:hover{color:var(--secondary-color);text-decoration:underline}
-    .cta-button{display:inline-block;background:linear-gradient(45deg,var(--primary-color),var(--secondary-color));padding:12px 30px;border-radius:50px;font-size:1rem;font-weight:500;color:#0e0f1a;text-decoration:none;transition:transform .3s,box-shadow .3s;box-shadow:0 4px 15px rgba(0,226,199,.25)}
-    .cta-button:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(155,92,255,.35)}
-    .badge{display:inline-block;padding:6px 10px;border-radius:8px;background:rgba(0,226,199,.08);border:1px solid rgba(0,226,199,.28);color:#c8fff3;font-size:.85rem;margin-right:8px;margin-bottom:8px}
-    .faq-item{background:var(--bg-light);border-radius:10px;margin-bottom:15px;border:1px solid rgba(255,255,255,.08);overflow:hidden}
-    .faq-question{padding:18px 20px;font-weight:600;font-size:1.05rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background-color .3s}
-    .faq-question:hover{background-color:rgba(255,255,255,.05)}
-    .faq-question::after{content:'+';font-size:1.5rem;color:var(--primary-color);transition:transform .3s}
+    ul li::before{
+      content:"\f058";font-family:"Font Awesome 6 Free";font-weight:900;
+      position:absolute;left:0;color:var(--secondary-color);font-size:1.05rem;top:2px
+    }
+    a{color:#E879F9;text-decoration:none;transition:color .25s}
+    a:hover{color:#FB7185;text-decoration:underline}
+    .cta-button{
+      display:inline-block;background:linear-gradient(45deg,var(--primary-color),var(--secondary-color));
+      padding:12px 30px;border-radius:999px;font-size:1rem;font-weight:700;color:#180A2C;
+      text-decoration:none;transition:transform .25s,box-shadow .25s;
+      box-shadow:0 10px 30px rgba(232,121,249,.25)
+    }
+    .cta-button:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(236,72,153,.35)}
+    .badge{
+      display:inline-block;padding:6px 10px;border-radius:10px;
+      background:rgba(168,85,247,.10);border:1px solid rgba(232,121,249,.35);
+      color:#FBE8FF;font-size:.86rem;margin-right:8px;margin-bottom:8px
+    }
+    .faq-item{background:#150C25;border-radius:12px;margin-bottom:14px;border:1px solid rgba(255,255,255,.08);overflow:hidden}
+    .faq-question{padding:18px 20px;font-weight:800;font-size:1.05rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+    .faq-question::after{content:'+';font-size:1.6rem;color:#E879F9;transition:transform .25s}
     .faq-question.active::after{content:'–';transform:rotate(180deg)}
-    .faq-answer{max-height:0;overflow:hidden;padding:0 20px;transition:max-height .4s ease-in-out,padding .4s ease-in-out;background:var(--bg-dark)}
-    .faq-answer p,.faq-answer ul{padding-top:10px;padding-bottom:18px}
+    .faq-answer{max-height:0;overflow:hidden;padding:0 20px;background:#10081D;border-top:1px dashed rgba(255,255,255,.08);transition:max-height .35s ease,padding .35s ease}
+    .faq-answer p,.faq-answer ul{padding:10px 0 16px;margin:0}
     footer{text-align:center;padding:40px 20px;margin-top:auto}
-    .social-links a{color:var(--text-color);margin:0 14px;font-size:1.4rem;transition:color .3s}
-    .social-links a:hover{color:var(--primary-color)}
+    .social-links a{color:#EADCFB;margin:0 14px;font-size:1.35rem;transition:color .25s}
+    .social-links a:hover{color:#F0ABFC}
+
+    /* tables */
+    table{width:100%;border-collapse:collapse;margin:1.2rem 0;background:#140C23;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.07)}
+    th,td{padding:1rem;text-align:left;border-bottom:1px solid rgba(255,255,255,.07)}
+    th{background:linear-gradient(180deg, #1C1133, #18102D);color:#F6EDFF}
+    tr:last-child td{border-bottom:none}
+    tr.highlight-row{background:#1B1030}
+    tr:hover{background:#191029}
   </style>
 </head>
 <body>
   <div class="header-bg">
     <div class="container">
-      <h1>SpookySwap - DeFi Exchange</h1>
+      <h1>SpookySwap Exchange — DeFi on Fantom</h1>
       <p class="tagline">
-        Swap and provide liquidity on <strong>Fantom</strong> with low fees and fast finality.
-        SpookySwap’s AMM supports stable & volatile pools, smart routing within Fantom, and MEV-aware best practices for safer execution.
+        Trade and provide liquidity with <strong>SpookySwap Exchange</strong> on Fantom (FTM). Learn the difference between
+        <strong>SpookySwap v2</strong> and <strong>SpookySwap v3</strong>, use <strong>SpookySwap Bridge</strong> safely, and optimize routing, slippage,
+        gas, and MEV protection for consistently better execution.
       </p>
       <div style="margin-top:18px">
         <span class="badge">Fantom Opera</span>
-        <span class="badge">AMM (Stable & Volatile)</span>
-        <span class="badge">Smart Routing</span>
-        <span class="badge">Liquidity Pools</span>
-        <span class="badge">Limit Orders / DCA*</span>
+        <span class="badge">SpookySwap v2</span>
+        <span class="badge">SpookySwap v3</span>
+        <span class="badge">SpookySwap Bridge</span>
+        <span class="badge">LP Strategies</span>
         <span class="badge">MEV-Aware</span>
       </div>
-      <div style="margin-top:26px">
-        <a class="cta-button" href="#" target="_blank" rel="noopener nofollow">Open SpookySwap →</a>
+      <div style="margin-top:24px">
+        <a class="cta-button" href="#" target="_blank" rel="noopener nofollow">Open SpookySwap Exchange →</a>
       </div>
     </div>
   </div>
@@ -75,175 +121,171 @@
   <div class="container">
     <!-- Protocol Overview -->
     <section id="protocol-overview">
-      <h2>SpookySwap Overview: Architecture & Execution Model</h2>
+      <h2>SpookySwap Exchange Overview: v2 / v3 Architecture & Routing</h2>
       <p>
-        SpookySwap is a <strong>Fantom-native AMM</strong> optimized for low-latency, low-fee swaps. The router searches
-        across Spooky’s <em>stable</em> and <em>volatile</em> pools and available pairs on Fantom to minimize price impact while honoring your slippage limit.
-        Because execution is local to Fantom, gas overhead is typically small and confirmations are fast.
+        <strong>SpookySwap Exchange</strong> is a Fantom-native AMM where swaps settle directly on-chain to your wallet.
+        The router evaluates <strong>SpookySwap v2</strong> (stable/volatile pools) and <strong>SpookySwap v3</strong> (concentrated liquidity)
+        and may hop through <strong>wFTM</strong> or stables to minimize price impact and gas.
       </p>
 
-      <h3>Core Components</h3>
+      <h3>SpookySwap v2 vs SpookySwap v3 — When Each Wins</h3>
       <ul>
-        <li><strong>AMM Pools:</strong> Constant-product (volatile) and stable-swap style pools (for correlated assets) to reduce slippage on stables.</li>
-        <li><strong>Smart Router:</strong> Chooses single-hop or multi-hop paths (e.g., <code>TOKEN → FTM → TOKEN</code>) and prefers stable pools when beneficial.</li>
-        <li><strong>Liquidity Layer:</strong> LPs deposit assets to earn fees; deeper liquidity reduces price impact for traders.</li>
-        <li><strong>Risk Filters:</strong> Verified token lists and contract checks help avoid common pitfalls (ticker clones, proxy traps).</li>
+        <li><strong>v2 Stable:</strong> Correlated assets (USDC/USDT). Curve concentrates liquidity near the peg → lower slippage.</li>
+        <li><strong>v2 Volatile:</strong> Constant-product pools for non-correlated pairs; predictable behavior, broad availability.</li>
+        <li><strong>v3 Concentrated:</strong> Tight execution when your trade sits <em>in-range</em>; monitor range/out-of-range risk.</li>
       </ul>
 
-      <h3>Effective Pricing on Fantom</h3>
+      <h3>Effective Price on SpookySwap Exchange</h3>
       <ul>
-        <li><strong>Price Impact:</strong> Larger trades move the pool price; splitting via better intermediate hops can help.</li>
-        <li><strong>Fees:</strong> AMM fee tier is embedded in the pool; check the UI’s breakdown before signing.</li>
-        <li><strong>Gas:</strong> Fantom gas is typically low, but multi-hop routes cost slightly more — the router weighs this trade-off.</li>
+        <li><strong>Price Impact:</strong> Depth × size. Router may split/hop via deeper legs (e.g., <code>TOKEN → wFTM → TOKEN</code>).</li>
+        <li><strong>Pool Fees:</strong> Embedded in v2/v3 pools; check tier and route preview in the UI.</li>
+        <li><strong>Gas on Fantom:</strong> Low, but multi-hop adds cost — route scoring uses net outcome, not just quote.</li>
       </ul>
 
-      <h3>MEV-Aware Execution</h3>
+      <h3>Where SpookySwap Bridge Fits</h3>
       <p>
-        Use tight slippage on liquid pairs and consider private/builder RPCs where supported by your wallet/RPC provider.
-        For larger trades, split into smaller chunks to reduce sandwich risk and slip.
+        Use <strong>SpookySwap Bridge</strong> (or reputable bridges) to fund Fantom first, then execute on <strong>SpookySwap Exchange</strong> locally.
+        Always test small, verify destination token contracts on FTMScan, and keep <strong>FTM</strong> for approvals.
       </p>
     </section>
 
     <!-- Security -->
     <section id="security">
-      <h2>Security, Trust Boundaries & Operational Safety</h2>
+      <h2>Security & MEV Safety for SpookySwap Exchange</h2>
       <p>
-        SpookySwap is non-custodial; swaps settle on-chain to your wallet. Still, diligence matters:
-        confirm token contracts, approvals, and transaction prompts before signing.
+        Non-custodial by design: you sign approvals and swaps. Adopt these habits for safer, cleaner execution on
+        <strong>SpookySwap Exchange</strong>.
       </p>
 
-      <h3>Key Safety Practices</h3>
+      <h3>Wallet & Allowance Hygiene</h3>
       <ul>
-        <li><strong>Verify Contracts:</strong> Cross-check token addresses on FTMScan or official links.</li>
-        <li><strong>Allowance Hygiene:</strong> Approve only what you need; revoke stale allowances periodically.</li>
-        <li><strong>Hardware Wallets:</strong> For material balances, confirm amounts/recipient on-device.</li>
-        <li><strong>Phishing Defense:</strong> Bookmark official app/docs; avoid interacting with unknown popups or “support.”</li>
+        <li>Use a hardware wallet for material balances; verify recipients and amounts on-device.</li>
+        <li>Approve <strong>minimal allowances</strong>; periodically revoke stale approvals.</li>
+        <li>Bookmark official <strong>SpookySwap Exchange</strong> URLs; avoid search-ad impostors.</li>
       </ul>
 
-      <h3>Threat Model & Mitigations</h3>
+      <h3>MEV-Aware Flow on Fantom</h3>
       <ul>
-        <li><strong>Sandwich/Front-run:</strong> Tight slippage, private RPC where possible, and consider order chunking.</li>
-        <li><strong>Pool Specific Risks:</strong> Impermanent loss for LPs; use stable pools for correlated assets to reduce IL.</li>
-        <li><strong>Route Failures:</strong> Fast-fail on insufficient output; refresh quotes if conditions change.</li>
+        <li><strong>Slippage discipline:</strong> Tight on deep pairs; widen slightly during volatility.</li>
+        <li><strong>Private/builder RPC:</strong> If supported, reduce sandwich risk on size; split large orders.</li>
+        <li><strong>Latency:</strong> Faster inclusion reduces exposure — consider a higher priority fee when needed.</li>
+      </ul>
+
+      <h3>Sanity Checks</h3>
+      <ul>
+        <li>Match token contracts on <strong>FTMScan</strong>; beware ticker clones and fee-on-transfer tokens.</li>
+        <li>Confirm route preview (v2 vs v3, wFTM hops) and minimum received threshold.</li>
+        <li>Re-quote if the market moves or mempool delay increases.</li>
       </ul>
     </section>
 
     <!-- Functions -->
     <section id="functions">
-      <h2>Power Features for Traders & LPs</h2>
+      <h2>SpookySwap Exchange Features: Router Patterns, LP Strategy, Tooling</h2>
 
-      <h3>Smart Routing Within Fantom</h3>
-      <p>
-        The router greedily evaluates viable paths across Spooky pools (stable/volatile). For stables or highly correlated pairs,
-        stable pools often yield better execution; for others, constant-product pools dominate.
-      </p>
-
-      <h3>Liquidity Provisioning</h3>
-      <p>
-        Provide liquidity to earn a share of trading fees. Depth matters: deeper pools improve execution quality and attract flow.
-        Track APY across pools and consider stable pools to reduce IL for correlated assets (e.g., <code>USDC/USDT</code>).
-      </p>
-
-      <h3>Limit Orders & DCA (if your UI supports it)</h3>
+      <h3>Router Patterns on SpookySwap</h3>
       <ul>
-        <li><strong>Limit Orders:</strong> Set a target price; on trigger, orders settle on-chain to your wallet.</li>
-        <li><strong>DCA:</strong> Automate periodic buys/sells to smooth entry; keep FTM for gas on each leg.</li>
+        <li><strong>Direct v3 (in-range):</strong> Best when concentrated liquidity surrounds current price.</li>
+        <li><strong>Stable pivot (v2):</strong> <code>ALT → wFTM → USDC</code> (or reverse) if stable/deep legs improve final output.</li>
+        <li><strong>v2 volatile simple:</strong> For non-correlated assets with healthy TVL and steady flow.</li>
+      </ul>
+
+      <h3>LP Strategy — v2 & v3</h3>
+      <ul>
+        <li><strong>v2 stable:</strong> Lower IL for correlated assets; fees scale with volume.</li>
+        <li><strong>v2 volatile:</strong> Higher IL risk; look for two-sided organic flow to offset via fees.</li>
+        <li><strong>v3 ranges:</strong> Concentrate near active price; rebalance if price exits your range.</li>
       </ul>
 
       <h3>Developer Notes</h3>
       <ul>
-        <li>Deterministic calldata and clear revert reasons (slippage, allowance, route invalidation).</li>
-        <li>Event logs for realized output, hop breakdown, and gas used (for dashboards/analytics).</li>
-        <li>Prefer verified contracts; expose pool fee tiers and pool type (stable/volatile) in UI.</li>
+        <li>Deterministic calldata; explicit revert reasons (slippage/allowance).</li>
+        <li>Emit route hops, realized output, and gas for dashboards.</li>
+        <li>Expose pool type (v2 stable/volatile, v3) and fee tiers in UI for clarity.</li>
       </ul>
 
-      <h3>Execution Metrics to Track</h3>
+      <h3>Execution KPIs</h3>
       <ul>
-        <li><strong>Quoted vs Realized Output</strong> (Δ post-settlement).</li>
-        <li><strong>Price Impact</strong> vs. mid-price at submission.</li>
-        <li><strong>Effective Cost</strong> = gas + pool fees ± slippage.</li>
-        <li><strong>Fail/Cancel Rate</strong> to tune RPC and slippage presets.</li>
+        <li><strong>Quoted vs realized output</strong> (post-settlement Δ).</li>
+        <li><strong>Effective price</strong> (received per unit after fees + gas).</li>
+        <li><strong>Pool TVL & 24h/7d volume</strong> as depth/flow proxies.</li>
+        <li><strong>Fail/Cancel rate</strong> to tune slippage and RPC.</li>
       </ul>
     </section>
 
     <!-- Practical Guide / Runbook -->
     <section id="runbook">
-      <h2>Practical Runbook: Getting Best Results</h2>
+      <h2>Runbook for SpookySwap Exchange: Slippage, Gas & Troubleshooting</h2>
 
       <h3>Before You Swap</h3>
       <ul>
-        <li>Keep some <strong>FTM</strong> for approvals and swap gas.</li>
-        <li>Verify token address/decimals and whether the token has transfer taxes.</li>
-        <li>Test with a small amount before scaling size.</li>
+        <li>Hold <strong>FTM</strong> for approvals and swap gas (buffer more during spikes).</li>
+        <li>Verify token address/decimals on FTMScan; understand transfer-tax tokens.</li>
+        <li>Do a micro-swap to validate the route (v2 vs v3) and fees.</li>
       </ul>
 
-      <h3>Slippage & Gas Tips</h3>
+      <h3>Slippage & Gas Guidance</h3>
       <ul>
-        <li>Liquid majors: <strong>0.1–0.5%</strong> slippage; illiquid tokens require wider bands.</li>
-        <li>During volatility, speed inclusion with a higher priority fee and/or use stable routes.</li>
-        <li>For larger size, consider chunking or routing through the deepest intermediate pair.</li>
+        <li><strong>Deep stables/majors:</strong> 0.10–0.50% slippage.</li>
+        <li><strong>Mid-caps / average depth:</strong> 0.50–1.50%.</li>
+        <li><strong>Illiquid/volatile:</strong> 1.50%+ (start conservative; scale carefully).</li>
       </ul>
 
       <h3>Troubleshooting Matrix</h3>
       <ul>
-        <li><strong>INSUFFICIENT_OUTPUT_AMOUNT</strong> → Slippage too tight or price moved; refresh and nudge tolerance.</li>
-        <li><strong>TRANSFER_FROM_FAILED</strong> → Missing allowance/approval or token blocked; approve minimal amount again.</li>
-        <li><strong>Stuck pending</strong> → RPC congestion; try another Fantom RPC or speed up with higher tip.</li>
+        <li><strong>INSUFFICIENT_OUTPUT_AMOUNT</strong> → Price moved / slippage too tight. Refresh, nudge tolerance, or split.</li>
+        <li><strong>TRANSFER_FROM_FAILED</strong> → Missing/low allowance. Re-approve the minimal amount.</li>
+        <li><strong>Long pending</strong> → RPC congestion. Switch RPC or raise priority fee; consider private/builder RPC.</li>
+      </ul>
+
+      <h3>SpookySwap Bridge — Safe On-Ramp</h3>
+      <ul>
+        <li>Use official links only; bridge a test amount first.</li>
+        <li>Verify destination token contracts on FTMScan.</li>
+        <li>Bring extra <strong>FTM</strong> for approvals after bridging; then swap on <strong>SpookySwap Exchange</strong>.</li>
       </ul>
     </section>
 
     <!-- FAQ -->
     <section id="faq">
-      <h2>Frequently Asked Questions</h2>
+      <h2>SpookySwap Exchange FAQ — v2 vs v3, Bridge, Fees, Safety</h2>
       <div class="faq-container">
         <div class="faq-item">
-          <div class="faq-question">How is SpookySwap different from a multi-chain aggregator?</div>
+          <div class="faq-question">SpookySwap v2 or SpookySwap v3 — how do I choose?</div>
           <div class="faq-answer">
-            <p>
-              SpookySwap focuses on <strong>native Fantom liquidity</strong> and optimized AMM routing <em>within</em> Fantom.
-              This keeps gas low and settlement fast. Aggregators span many DEXs/chains; Spooky aims to be best-in-class on Fantom.
-            </p>
+            <p><strong>v2</strong> is ideal for stable and general pairs; <strong>v3</strong> excels with in-range liquidity near price. The router typically selects by effective price (net of fees + gas).</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <div class="faq-question">Which assets and pools are best for low slippage?</div>
+          <div class="faq-question">How do I use SpookySwap Bridge safely?</div>
           <div class="faq-answer">
-            <p>
-              <strong>Stable pools</strong> are ideal for correlated assets (e.g., USDC/USDT), while <strong>volatile pools</strong> serve non-correlated pairs.
-              Check pool depth and recent volume; deeper liquidity = better price stability.
-            </p>
+            <p>Bridge via reputable links, test small, verify contracts on FTMScan, then swap locally on <strong>SpookySwap Exchange</strong>. Keep FTM for gas.</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <div class="faq-question">How can I reduce MEV risk on Fantom?</div>
+          <div class="faq-question">What slippage should I set on SpookySwap Exchange?</div>
+          <div class="faq-answer">
+            <p>Deep pairs: 0.10–0.50%. Mid-caps: 0.50–1.50%. Illiquid: 1.50%+. Tight settings reduce MEV surface but may cause reverts in choppy markets.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">How do I minimize MEV on Fantom?</div>
           <div class="faq-answer">
             <ul>
-              <li>Use tight but realistic slippage and avoid peak volatility.</li>
-              <li>Consider private/builder RPCs if your wallet supports them.</li>
-              <li>Split larger trades into smaller transactions.</li>
+              <li>Use tight but realistic slippage; submit during calmer periods.</li>
+              <li>Consider private/builder RPC for size; split large orders.</li>
+              <li>Raise priority fee to shorten mempool time.</li>
             </ul>
           </div>
         </div>
 
         <div class="faq-item">
-          <div class="faq-question">What should LPs watch out for?</div>
+          <div class="faq-question">Why does realized output differ from the quote?</div>
           <div class="faq-answer">
-            <p>
-              Impermanent loss on volatile pairs; protocol fee tiers; and utilization.
-              For correlated assets, stable pools reduce IL. Monitor APR/fees vs. IL to assess net returns.
-            </p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">Why can realized output differ from the initial quote?</div>
-          <div class="faq-answer">
-            <p>
-              Pool prices shift as trades land; gas and inclusion time matter.
-              Always evaluate <em>effective price</em> after fees and slippage, not just the headline quote.
-            </p>
+            <p>On-chain state changes between quote and inclusion. Other trades move price and multi-hop gas adds friction. Compare routes by <em>effective price</em>, not just headline quotes.</p>
           </div>
         </div>
       </div>
@@ -256,7 +298,7 @@
         <a href="#" target="_blank" aria-label="Documentation"><i class="fas fa-book"></i></a>
         <a href="#" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
       </div>
-      <p>Built in the Spirit Realm 👻 for smoother Fantom swaps.</p>
+      <p>SpookySwap Exchange — violet & pink vibes, Fantom-fast execution 👻</p>
     </footer>
   </div>
 
@@ -273,15 +315,10 @@
         }else{
           ans.style.maxHeight=ans.scrollHeight+"px";
           ans.style.paddingTop="10px";
-          ans.style.paddingBottom="18px";
+          ans.style.paddingBottom="16px";
         }
       });
     });
   </script>
 </body>
 </html>
-
-    
-
-
-</body></html>
